@@ -107,6 +107,9 @@ public class ListMockTest {
 	
 	@Test
 	public void mocking() {
+		
+		// mocking is "instead of the real world action"
+		
 		ArrayList arrayListMock = mock(ArrayList.class);
 		when(arrayListMock.size()).thenReturn(5);
 		assertEquals(5, arrayListMock.size());
@@ -116,6 +119,11 @@ public class ListMockTest {
 	public void spying() {
 		// for a spy, the original behavior of the class is retained
 		// in this case, the array list
+		
+		// spying is where you allow the action to happen in the actual
+		// class and you observe the behavior (if you don't have access
+		// to the specific class)... you can do verifications on it
+		
 		ArrayList arrayListSpy = spy(ArrayList.class);
 		arrayListSpy.add("test");
 		arrayListSpy.add("test2");
