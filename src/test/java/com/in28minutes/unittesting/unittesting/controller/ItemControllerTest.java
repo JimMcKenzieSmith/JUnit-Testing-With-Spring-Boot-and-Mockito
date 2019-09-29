@@ -19,6 +19,10 @@ import com.in28minutes.unittesting.unittesting.model.Item;
 
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
+
+
+
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ItemController.class)  // this annotation indicates that we only want to test the item controller
@@ -64,6 +68,27 @@ public class ItemControllerTest {
 				// ... if there are additional elements in the json response, it will STILL 
 				// pass!!!
 				.andExpect(MockMvcResultMatchers.content().json("{id:2,name:Item2,price:10}"))
+				.andReturn();
+		
+		//assertEquals("Hello World", result.getResponse().getContentAsString());
+	}
+	
+	@Test
+	public void retriveAllItems_basic() throws Exception {
+		//call GET "/item-from-biz-service"  application/json
+
+		when(businessService.retrieveAllItems())
+			.thenReturn(Arrays.asList(new Item(2,"Item2",10,10),new Item(3,"Item3",20,20)));
+		
+		RequestBuilder request = MockMvcRequestBuilders.get("/items")
+				.accept(MediaType.APPLICATION_JSON);
+		
+		MvcResult result = mockMvc.perform(request)
+				.andExpect(MockMvcResultMatchers.status().is(200))
+				// json method only checks for this list of elements to be present
+				// ... if there are additional elements in the json response, it will STILL 
+				// pass!!!
+				.andExpect(MockMvcResultMatchers.content().json("[{id:2,name:Item2,price:10},{id:3,name:Item3,price:20}]"))
 				.andReturn();
 		
 		//assertEquals("Hello World", result.getResponse().getContentAsString());
